@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>A Jornada da Contadora</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Cinzel', serif;
+      background-color: #f4f0e6;
+      background-image: url('bg_inicio.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #3e2f1c;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-image 1s ease-in-out;
+    }
+
+    #intro, #game {
+      background-color: rgba(255, 255, 240, 0.95);
+      padding: 3em;
+      border-radius: 15px;
+      box-shadow: 0 0 25px #a58b61;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 0.5em;
+    }
+
+    p {
+      font-size: 1.1em;
+      margin-bottom: 2em;
+    }
+
+    .btn {
+      padding: 1em 2em;
+      background-color: #dcbf94;
+      border: 2px solid #8c6d3f;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: 0.3s ease;
+      margin: 0.5em;
+    }
+
+    .btn:hover {
+      background-color: #f5e4c3;
+      transform: scale(1.05);
+    }
+
+    .choice button {
+      margin: 1em 0.5em;
+    }
+
+    #audio {
+      display: none;
+    }
+  </style>
+</head>
+<body id="body">
+
+  <!-- Tela de Introdução -->
+  <div id="intro">
+    <h1>🌿 A Jornada da Contadora 🌿</h1>
+    <p>Você é uma contadora de histórias, guardiã das memórias do seu povo. Suas decisões moldarão o destino da memória ancestral. A cada escolha, uma nova trilha se revela. Use sua sabedoria para guiar a jornada.</p>
+    <button class="btn" onclick="iniciarJogo()">Começar a Jornada</button>
+  </div>
+
+  <!-- Área principal do jogo -->
+  <div id="game" style="display: none;">
+    <h1>A Jornada da Contadora</h1>
+    <p id="story">Um novo dia começa, você escolhe...</p>
+    <div class="choice" id="choices">
+      <button class="btn" onclick="escolhaVila()">Sair e caminhar até a vila</button>
+      <button class="btn" onclick="escolhaCancao()">Ficar em casa e entoar uma canção ancestral</button>
+    </div>
+  </div>
+
+  <!-- Áudio -->
+  <audio id="audio" loop>
+    <source id="audioSource" type="audio/mp3">
+  </audio>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const audioSource = document.getElementById('audioSource');
+
+    function playAudio(soundFile) {
+      audioSource.src = soundFile;
+      audio.load();
+      audio.play();
+    }
+
+    function iniciarJogo() {
+      document.getElementById('intro').style.display = 'none';
+      document.getElementById('game').style.display = 'block';
+      document.getElementById('body').style.backgroundImage = "url('bg_inicio.jpg')";
+    }
+
+    function escolhaVila() {
+      document.getElementById('body').style.backgroundImage = "url('bg_vila.jpg')";
+      playAudio('bg_vila.wav');
+      document.getElementById('story').innerText =
+        "Você caminha até a vila e encontra uma criança chorando. Ela perdeu um colar encantado, herança de sua avó.";
+      document.getElementById('choices').innerHTML = `
+        <button class="btn" onclick="ajudarCrianca()">Ajudar a criança</button>
+        <button class="btn" onclick="ignorarCrianca()">Ignorar e seguir adiante</button>
+      `;
+    }
+
+    function escolhaCancao() {
+      document.getElementById('body').style.backgroundImage = "url('bg_cancao.jpg')";
+      playAudio('bg_espirito.wav');
+      document.getElementById('story').innerText =
+        "Sua voz ecoa pela casa, e um espírito ancestral aparece, envolto em luz dourada.";
+      document.getElementById('choices').innerHTML = `
+        <button class="btn" onclick="ouvirEspirito()">Ouvir o espírito</button>
+        <button class="btn" onclick="fugirEspirito()">Fugir com medo</button>
+      `;
+    }
+
+    function ajudarCrianca() {
+      document.getElementById('body').style.backgroundImage = "url('bg_vila.jpg')";
+      playAudio('bg_vila.wav');
+      document.getElementById('story').innerText =
+        "Você promete ajudar. A criança sorri e diz que viu o colar perto da árvore dos três galhos.";
+      document.getElementById('choices').innerHTML = `
+        <button class="btn" onclick="irParaFloresta()">Ir até a floresta</button>
+      `;
+    }
+
+    function ignorarCrianca() {
+      document.getElementById('body').style.backgroundImage = "url('bg_vila.jpg')";
+      playAudio('bg_vila.wav');
+      document.getElementById('story').innerText =
+        "Você segue seu caminho, mas sente uma tristeza profunda no ar. Algo se perdeu...";
+      document.getElementById('choices').innerHTML = `
+        <button class="btn" onclick="irParaFloresta()">Seguir para a floresta</button>
+      `;
+    }
+
+    function ouvirEspirito() {
+      document.getElementById('body').style.backgroundImage = "url('bg_espirito.jpg')";
+      playAudio('bg_espirito.wav');
+      document.getElementById('story').innerText =
+        "O espírito revela que grandes desafios virão, e apenas quem conhece as histórias do povo poderá vencê-los.";
+      document.getElementById('choices').innerHTML = `
+        <button class="btn" onclick="irParaFloresta()">Seguir para a floresta</button>
+      `;
+    }
+
+    function fugirEspirito() {
+      document.getElementById('body').style.backgroundImage = "url('bg_espirito.jpg')";
+      playAudio('bg_espirito.wav');
+      document.getElementById('story').innerText =
+        "Você foge e a canção é interrompida. Uma névoa estranha cobre sua memória.";
+      document.getElementById('choices').innerHTML = `
+        <button class="btn" onclick="irParaFloresta()">Seguir para a floresta</button>
+      `;
+    }
+
+    function irParaFloresta() {
+      document.getElementById('body').style.backgroundImage = "url('bg_floresta.jpg')";
+      playAudio('bg_vila.wav');
+      document.getElementById('story').innerText =
+        "Você segue rumo à floresta dos ecos, onde vozes antigas chamam por você...";
+      document.getElementById('choices').innerHTML = `
+        <button class="btn" onclick="encontroCurupira()">Seguir as vozes misteriosas</button>
+        <button class="btn" onclick="encontroIara()">Seguir o som do riacho</button>
+      `;
+    }
+
+    function encontroCurupira() {
+      document.getElementById('body').style.backgroundImage = "url('bg_curupira.jpg')";
+      playAudio('bg_curupira.wav');
+      document.getElementById('story').innerText =
+        "No centro da floresta, um ser de cabelos flamejantes e pés virados observa você. É o Curupira. 'Conte-me uma verdade da sua infância ou perca-se para sempre', ele diz.";
+      document.getElementById('choices').innerHTML = `
+        <button class="btn" onclick="contarVerdade()">Contar uma história verdadeira</button>
+        <button class="btn" onclick="mentirParaCurupira()">Inventar uma mentira</button>
+      `;
+    }
+
+    function contarVerdade() {
+      document.getElementById('body').style.backgroundImage = "url('bg_curupira.jpg')";
+      playAudio('bg_curupira.wav');
+      document.getElementById('story').innerText =
+        "Ao ouvir sua história verdadeira, o Curupira sorri. 'Você honra suas memórias. Siga pela trilha do coração.'";
+      document.getElementById('choices').innerHTML = `
+        <button class="btn" onclick="irParaPonte()">Seguir pela trilha do coração</button>
+      `;
+    }
+
+    function mentirParaCurupira() {
+      document.getElementById('body').style.backgroundImage = "url('bg_curupira_black.jpg')";
+      playAudio('bg_curupira.wav');
+      document.getElementById('story').innerText =
+        "O Curupira sente sua mentira. Com um assobio agudo, a floresta escurece e fecha os caminhos. Você perde parte da sua memória.";
+      document.getElementById('choices').innerHTML = `
+        <button class="btn" onclick="irParaPonte()">Seguir pela trilha da dúvida</button>
+      `;
+    }
+
+    function encontroIara() {
+      document.getElementById('body').style.backgroundImage = "url('bg_iara.jpg')";
+      playAudio('bg_iara.m4a');
+      document.getElementById('story').innerText =
+        "À beira do riacho, uma mulher de olhos profundos canta. É a Iara. Ela te convida a ouvir a canção até o fim.";
+      document.getElementById('choices').innerHTML = `
+        <button class="btn" onclick="ouvirCancao()">Ouvir com atenção</button>
+        <button class="btn" onclick="interromperCancao()">Interromper a canção</button>
+      `;
+    }
+
+    function ouvirCancao() {
+      document.getElementById('body').style.backgroundImage = "url('bg_iara.jpg')";
+      playAudio('bg_iara.m4a');
+      document.getElementById('story').innerText =
+        "A canção desperta uma lembrança esquecida: o rosto de sua avó te ensinando a contar histórias. Você sente seu coração brilhar.";
+      document.getElementById('choices').innerHTML = `
+        <button class="btn" onclick="irParaPonte()">Seguir pela trilha da sabedoria</button>
+      `;
+    }
+
+    function interromperCancao() {
+      document.getElementById('body').style.backgroundImage = "url('bg_iara.jpg')";
+      playAudio('bg_iara.m4a');
+      document.getElementById('story').innerText =
+        "Ao interromper a canção, a Iara mergulha nas águas. A memória que estava prestes a emergir se desfaz como névoa.";
+      document.getElementById('choices').innerHTML = `
+        <button class="btn" onclick="irParaPonte()">Seguir pela trilha do silêncio</button>
+      `;
+    }
+
+    function irParaPonte() {
+      document.getElementById('body').style.backgroundImage = "url('bg_ponte.jpg')";
+      playAudio('bg_ponte.wav');
+      document.getElementById('story').innerText =
+        "Você pisa na ponte antiga. No meio dela, uma névoa toma forma. Surge o Guardião Espectral: 'Só quem honra as histórias pode cruzar.'";
+      document.getElementById('choices').innerHTML = `
+        <button class="btn" onclick="finalBom()">Contar a história real de sua jornada</button>
+        <button class="btn" onclick="finalNeutro()">Inventar uma nova história</button>
+        <button class="btn" onclick="finalRuim()">Ficar em silêncio</button>
+      `;
+    }
+
+    function finalBom() {
+      document.getElementById('body').style.backgroundImage = "url('bg_final_bom.jpg')";
+      playAudio('bg_final_bom.wav');
+      document.getElementById('story').innerText =
+        "Sua voz ecoa forte, com memórias da vila, da floresta, da canção e da criança. O Guardião sorri. A ponte se ilumina. Você alcança o Santuário da Memória e se torna uma Griô eterna.";
+      document.getElementById('choices').innerHTML = `
+        <p><strong>🌟 FINAL FELIZ:</strong> Você se tornou a "Guardiã das Histórias"</p>
+        <button class="btn" onclick="reiniciar()">Recomeçar a Jornada</button>
+      `;
+    }
+
+    function finalNeutro() {
+      document.getElementById('body').style.backgroundImage = "url('bg_final_neutro.jpg')";
+      playAudio('bg_vila.wav');
+      document.getElementById('story').innerText =
+        "Você inventa algo novo. O guardião hesita, mas permite sua passagem. Você entra no Santuário com dúvidas no coração.";
+      document.getElementById('choices').innerHTML = `
+        <p><strong>🌀 FINAL NEUTRO:</strong> Com tantas histórias inventadas você é nomeada "A Inventora de Histórias"</p>
+        <button class="btn" onclick="reiniciar()">Recomeçar a Jornada</button>
+      `;
+    }
+
+    function finalRuim() {
+      document.getElementById('body').style.backgroundImage = "url('bg_final_ruim.jpg')";
+      playAudio('bg_final_ruim.wav');
+      document.getElementById('story').innerText =
+        "Você hesita. O silêncio pesa. O guardião fecha o caminho. A ponte desaparece. Você retorna, com memórias dispersas, sem saber se tudo foi real.";
+      document.getElementById('choices').innerHTML = `
+        <p><strong>🌑 FINAL RUIM:</strong> Suas escolhas levaram o folclore brasileiro ao Esquecimento...</p>
+        <button class="btn" onclick="reiniciar()">Recomeçar a Jornada</button>
+      `;
+    }
+
+    function reiniciar() {
+      location.reload();
+    }
+  </script>
+</body>
+</html>
